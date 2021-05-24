@@ -1,24 +1,19 @@
-local Job = require('plenary/job')
 local previewers = require('telescope.previewers')
 local pickers = require('telescope.pickers')
 local sorters = require('telescope.sorters')
 local finders = require('telescope.finders')
 local conf = require('telescope.config').values
+local actions = require('telescope.actions')
 local make_entry = require('telescope.make_entry')
+
+local watson_actions = require('watson/telescope/actions')
+local utils = require('watson/utils')
 
 local flatten = vim.tbl_flatten
 
 local M = {}
 
-function M.watson_dir()
-    git_root =  vim.fn.systemlist("git rev-parse --show-toplevel")  
 
-    return git_root[1]
-end
-
-function M.data_dir()
-    return M.watson_dir() .. "/data"
-end
 
 function M.find_data(opts)
     opts = opts or {}
@@ -26,8 +21,10 @@ function M.find_data(opts)
     local find_command = opts.find_command
     local hidden = opts.hidden
     local follow = opts.follow
-    -- local search_dirs = opts.search_dirs
-    local search_dirs = {M.data_dir()}
+
+    -- We only want to search in the data directory
+    local search_dirs = {utils.data_dir()}
+    opts.cwd = utils.data_dir()
     
 
     if search_dirs then
@@ -94,6 +91,11 @@ function M.find_data(opts)
 
     opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
+    --[[ if opts.insert then
+        -- TODO: here goes the code to insert datadir("path/to/file")
+        -- 
+    end ]]
+
     pickers.new(opts, {
         prompt_title = 'Data',
         finder = finders.new_oneshot_job(
@@ -102,6 +104,10 @@ function M.find_data(opts)
         ),
         previewer = conf.file_previewer(opts),
         sorter = conf.file_sorter(opts),
+        attach_mappings = function()
+            actions.select_default:replace(watson_actions.insert)
+            return true
+        end
         }
     ):find()
 end
