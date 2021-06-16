@@ -17,8 +17,7 @@ function M.insert(prompt_bufnr)
 
     local data_path = string.gsub(path, utils.data_dir().."/", "") 
 
-
-    api.nvim_put({'datadir(\"' .. data_path .. '\")'}, "c", true, true)
+    api.nvim_put({'datadir("' .. data_path .. '")'}, "c", true, true)
 
 end
 
