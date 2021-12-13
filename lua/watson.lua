@@ -32,7 +32,6 @@ M.find_data = function(opts)
     opts = themes.get_dropdown(opts)
 
     return telescope_builtin.find_files(opts)
-    
 
 end
 

@@ -1,4 +1,5 @@
 local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 local utils = require('watson/utils')
 
 local api = vim.api
@@ -8,7 +9,7 @@ local M = {}
 function M.insert(prompt_bufnr)
     actions.close(prompt_bufnr)
 
-    local entry = actions.get_selected_entry()
+    local entry = action_state.get_selected_entry()
 
     -- HACK: quick fix to get it working under windows, there are probably
     -- better ways...
