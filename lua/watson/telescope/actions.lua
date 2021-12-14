@@ -1,6 +1,7 @@
 local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local utils = require('watson/utils')
+local Job = require "plenary.job"
 
 local api = vim.api
 
@@ -20,6 +21,20 @@ function M.insert(prompt_bufnr)
 
     api.nvim_put({'datadir("' .. data_path .. '")'}, "c", true, true)
 
+end
+
+function M.open_plot(prompt_bufnr)
+    actions.close(prompt_bufnr)
+    local entry = action_state.get_selected_entry()
+
+
+    local stdout, ret = Job
+      :new({
+        command = "xdg-open",
+        args = { entry[1] },
+        cwd = utils.plots_dir(),
+      })
+      :start()
 end
 
 return M

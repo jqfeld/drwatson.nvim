@@ -10,7 +10,7 @@ local M = {}
 
 M.find_data = function(opts)
     opts = opts or {}
-    opts.previewer = opts.previewer or false
+    -- opts.previewer = opts.previewer or false
     opts.search_dirs = opts.search_dirs or {utils.data_dir()}
     opts.cwd = opts.cwd or utils.data_dir()
     opts.prompt_title = opts.prompt_title or "Find Data"
@@ -29,7 +29,32 @@ M.find_data = function(opts)
         end
     end
 
-    opts = themes.get_dropdown(opts)
+    opts.find_command = { "fd", "--type", "f", "--strip-cwd-prefix" }
+
+    if opts.previewer == false then opts = themes.get_dropdown(opts) end
+
+    return telescope_builtin.find_files(opts)
+
+end
+
+
+
+M.find_plot = function(opts)
+    opts = opts or {}
+    -- opts.previewer = opts.previewer or false
+    opts.search_dirs = opts.search_dirs or {utils.plots_dir()}
+    opts.cwd = opts.cwd or utils.plots_dir()
+    opts.prompt_title = opts.prompt_title or "Find Plot"
+
+
+    opts.attach_mappings = function()
+        actions.select_default:replace(watson_actions.open_plot)
+        return true
+    end
+
+    opts.find_command = { "fd", "--type", "f", "--strip-cwd-prefix" }
+
+    if opts.previewer == false then opts = themes.get_dropdown(opts) end
 
     return telescope_builtin.find_files(opts)
 

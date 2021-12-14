@@ -11,4 +11,8 @@ function M.data_dir()
     return M.watson_dir() .. "/data"
 end
 
+function M.plots_dir()
+    return M.watson_dir() .. "/plots"
+end
+
 return M
