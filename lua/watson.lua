@@ -38,17 +38,15 @@ M.find_data = function(opts)
 end
 
 
-
-M.find_plot = function(opts)
+M.find_and_open = function(opts)
     opts = opts or {}
-    -- opts.previewer = opts.previewer or false
-    opts.search_dirs = opts.search_dirs or {utils.plots_dir()}
-    opts.cwd = opts.cwd or utils.plots_dir()
-    opts.prompt_title = opts.prompt_title or "Find Plot"
+
+    opts.cwd = opts.cwd or utils.watson_dir()
+    opts.prompt_title = opts.prompt_title or "Find"
 
 
     opts.attach_mappings = function()
-        actions.select_default:replace(watson_actions.open_plot)
+        actions.select_default:replace(watson_actions.make_open_with(opts))
         return true
     end
 
@@ -58,6 +56,23 @@ M.find_plot = function(opts)
 
     return telescope_builtin.find_files(opts)
 
+end
+
+
+M.find_plot = function(opts)
+    return M.find_and_open({
+        cwd = utils.plots_dir(),
+        open_command = "xdg-open",
+        prompt_title = "Find Plot",
+    })
+end
+
+M.find_notes = function(opts)
+    return M.find_and_open({
+        cwd = utils.notes_dir(),
+        open_command = "xdg-open",
+        prompt_title = "Find Notes",
+    })
 end
 
 

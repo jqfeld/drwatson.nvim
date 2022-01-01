@@ -37,4 +37,24 @@ function M.open_plot(prompt_bufnr)
       :start()
 end
 
+function M.make_open_with(opts)
+    cmd = opts.open_command or "xdg-open"
+    cwd = opts.cwd or utils.watson_dir()
+    
+    func = function(prompt_bufnr)
+        actions.close(prompt_bufnr)
+        local entry = action_state.get_selected_entry()
+
+
+        local stdout, ret = Job
+          :new({
+            command = cmd,
+            args = { entry[1] },
+            cwd = cwd,
+          })
+          :start()
+    end
+    return func
+end
+
 return M
