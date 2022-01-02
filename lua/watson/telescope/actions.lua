@@ -7,19 +7,22 @@ local api = vim.api
 
 local M = {}
 
-function M.insert(prompt_bufnr)
-    actions.close(prompt_bufnr)
+function M.make_insert(directory)
+    function insert(prompt_bufnr)
+        actions.close(prompt_bufnr)
 
-    local entry = action_state.get_selected_entry()
+        local entry = action_state.get_selected_entry()
 
-    -- HACK: quick fix to get it working under windows, there are probably
-    -- better ways...
-    local path = entry[1]
-    path = string.gsub(path, "\\", "/")
+        -- HACK: quick fix to get it working under windows, there are probably
+        -- better ways...
+        local path = entry[1]
+        path = string.gsub(path, "\\", "/")
 
-    local data_path = string.gsub(path, utils.data_dir().."/", "") 
+        local data_path = string.gsub(path, utils[directory]().."/", "") 
 
-    api.nvim_put({'datadir("' .. data_path .. '")'}, "c", true, true)
+        api.nvim_put({directory..'("' .. data_path .. '")'}, "c", true, true)
+    end
+    return insert
 
 end
 
@@ -39,7 +42,7 @@ end
 
 function M.make_open_with(opts)
     cmd = opts.open_command or "xdg-open"
-    cwd = opts.cwd or utils.watson_dir()
+    cwd = opts.cwd or utils.projectdir()
     
     func = function(prompt_bufnr)
         actions.close(prompt_bufnr)

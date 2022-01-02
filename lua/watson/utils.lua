@@ -1,22 +1,26 @@
 
 local M = {}
 
-function M.watson_dir()
+function M.projectdir()
     local git_root =  vim.fn.systemlist("git rev-parse --show-toplevel")  
 
     return git_root[1]
 end
 
-function M.data_dir()
-    return M.watson_dir() .. "/data"
+function M.datadir()
+    return M.projectdir() .. "/data"
 end
 
-function M.plots_dir()
-    return M.watson_dir() .. "/plots"
+function M.scriptsdir()
+    return M.projectdir() .. "/scripts"
 end
 
-function M.notes_dir()
-    return M.watson_dir() .. "/notes"
+function M.plotsdir()
+    return M.projectdir() .. "/plots"
+end
+
+function M.notesdir()
+    return M.projectdir() .. "/notes"
 end
 
 return M
