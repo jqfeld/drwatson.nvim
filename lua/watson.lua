@@ -88,6 +88,7 @@ M.find_and_open_ext = function(directory, opts)
 end
 
 M.find_data = function (opts)
+    opts = opts or {}
     opts.prompt_title = "Find Data"
     return M.find_in('datadir', opts) 
 end
