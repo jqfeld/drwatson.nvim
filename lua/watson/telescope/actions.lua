@@ -26,34 +26,26 @@ function M.make_insert(directory)
 
 end
 
-function M.open_plot(prompt_bufnr)
-    actions.close(prompt_bufnr)
-    local entry = action_state.get_selected_entry()
-
-
-    local stdout, ret = Job
-      :new({
-        command = "xdg-open",
-        args = { entry[1] },
-        cwd = utils.plots_dir(),
-      })
-      :start()
-end
-
 function M.make_open_with(opts)
     cmd = opts.open_command or "xdg-open"
+    args = opts.args or {}
     cwd = opts.cwd or utils.projectdir()
     
     func = function(prompt_bufnr)
         actions.close(prompt_bufnr)
         local entry = action_state.get_selected_entry()
 
+        table.insert(args, entry[1])
 
         local stdout, ret = Job
           :new({
             command = cmd,
-            args = { entry[1] },
-            cwd = cwd,
+            args = args,
+            cwd = cwd, 
+            -- on_stderr = function(error, data)
+            --     P(error)
+            --     P(data)
+            -- end,
           })
           :start()
     end
