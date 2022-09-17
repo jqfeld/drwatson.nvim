@@ -70,8 +70,14 @@ M.find_plot = function(opts)
         {
             -- open_command = "feh",
             -- args = {'--auto-zoom', '--scale-down', '--conversion-timeout 0'},
-            open_command = "zathura",
-            args = {},
+            open_command = "pqiv",
+            args = {
+                "-t",
+                "--browse",
+                "--thumbnail-size=512x512",
+                "--watch-directories",
+                "--watch-files=changes-only"
+            },
             prompt_title = "Find Plot",
         }
     )
