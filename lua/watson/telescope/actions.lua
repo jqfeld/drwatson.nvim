@@ -20,7 +20,7 @@ function M.make_insert(directory)
 
         local data_path = string.gsub(path, utils[directory]().."/", "") 
 
-        api.nvim_put({directory..'("' .. data_path .. '")'}, "c", true, true)
+        api.nvim_put({directory..'("' .. data_path .. '")'}, "c", false, true)
     end
     return insert
 
