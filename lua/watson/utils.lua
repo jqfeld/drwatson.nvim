@@ -2,8 +2,7 @@
 local M = {}
 
 function M.projectdir()
-    local git_root =  vim.fn.systemlist("git rev-parse --show-toplevel")  
-
+    local git_root =  vim.fn.systemlist("git rev-parse --show-toplevel")
     return git_root[1]
 end
 
